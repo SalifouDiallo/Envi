@@ -4,7 +4,8 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- master  # Declenche le pipeline a chaque modification sur la branche 'master'.
 
-pool:"default"
+pool: 'default' # Definit le pool d'agents par defaut pour executer les taches.
 
+steps: 
