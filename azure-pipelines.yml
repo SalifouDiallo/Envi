@@ -7,7 +7,7 @@ trigger:
 - master  # Declenche le pipeline a chaque modification sur la branche 'master'.
 
 pool: 'default' # Definit le pool d'agents par defaut pour executer les taches.
-
+  
 steps: 
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:

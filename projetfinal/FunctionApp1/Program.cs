@@ -1,13 +1,21 @@
-using Microsoft.Azure.Functions.Worker.Builder;
+using BlobFunction;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-var builder = FunctionsApplication.CreateBuilder(args);
+var host = new HostBuilder()
+    .ConfigureFunctionsWebApplication()
+    .ConfigureServices(services =>
+    {
+        services.AddApplicationInsightsTelemetryWorkerService();
+        services.ConfigureFunctionsApplicationInsights();
+    })
 
-builder.ConfigureFunctionsWebApplication();
+    //This is required for the Azurite Local Emulator to work correctly.
+    .ConfigureAppConfiguration(config => { config.AddUserSecrets<Function1>(optional: true, reloadOnChange: false); })
+    
+    .Build();
 
-// Application Insights isn't enabled by default. See https://aka.ms/AAt8mw4.
-// builder.Services
-//     .AddApplicationInsightsTelemetryWorkerService()
-//     .ConfigureFunctionsApplicationInsights();
 
-builder.Build().Run();
+host.Run();
